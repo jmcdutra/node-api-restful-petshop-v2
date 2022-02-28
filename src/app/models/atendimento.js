@@ -28,7 +28,7 @@ class Service {
                 if (error) {
                     response.status(400).json(error)
                 } else {
-                    response.status(201).json(result)
+                    response.status(201).json(_service)
                 }
             })
         }
@@ -54,6 +54,33 @@ class Service {
                 response.status(400).json(error)
             } else {
                 response.status(200).json(results[0])
+            }
+        })
+    }
+
+    alter(id, values, response) {
+        if (values.date) {
+            values.date = moment(values.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+        }
+        const query = "UPDATE services SET ? WHERE ID = ?"
+
+        connection.query(query, [values, id], (error, results) => {
+            if (error) {
+                response.status(400).json(error)
+            } else {
+                response.status(200).json({id, ...values})
+            }
+        })
+    }
+
+    delete(id, response) {
+        const query = "DELETE FROM services WHERE id = ?"
+
+        connection.query(query, id, (error, results) => {
+            if (error) {
+                response.status(400).json(error)
+            } else {
+                response.status(200).json({id: id, message: "Cliente removido com sucesso"})
             }
         })
     }
