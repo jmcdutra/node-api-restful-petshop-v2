@@ -1,11 +1,14 @@
-const mysql = require("mysql2")
+const Sequelize = require('sequelize')
+const config = require('../../config/config.js')
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "dutra",
-    password: "admin",
-    database: "agenda-petshop",
-})
+const instance = new Sequelize(
+    config.mysql.database, 
+    config.mysql.user, 
+    config.mysql.password, 
+    {
+        host: config.mysql.host, 
+        dialect: "mysql"
+    }
+)
 
-module.exports = connection
+module.exports = instance
